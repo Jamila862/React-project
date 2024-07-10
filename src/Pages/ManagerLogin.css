@@ -1,0 +1,46 @@
+/* ManagerLogin.css */
+
+.login-form {
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers elements horizontally */
+  justify-content: center; /* Centers elements vertically */
+  width: 500px; /* Sets form width */
+  margin: 0 auto; /* Centers form horizontally on the page */
+  padding: 20px; /* Adds padding inside the form */
+  border-radius: 10px; /* Adds rounded corners to the form */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow effect */
+}
+
+h2 {
+  text-align: center; /* Centers the title text */
+  margin-bottom: 30px; /* Adds space below the title */
+}
+
+label {
+  display: block; /* Makes labels appear on separate lines */
+  margin-bottom: 10px; /* Adds space below labels */
+  font-weight: bold; /* Makes labels bold for emphasis (optional) */
+}
+
+input {
+  width: 100%; /* Sets input width to 100% of form width */
+  padding: 17px; /* Adds padding inside input fields */
+  border: 1px solid #ee1b1b; /* Adds a border to input fields */
+  border-radius: 10px; /* Adds rounded corners to input fields */
+}
+
+button {
+  background-color: #1879e0; /* Sets button background color (blue) */
+  color: #dd1c1c; /* Sets button text color (white) */
+  padding: 10px 20px;
+  margin: 20px;
+  border: none; /* Removes button border */
+  border-radius: 10px; /* Adds rounded corners to button */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+}
+
+button:hover {
+  background-color: #ceb110; /* Changes button background color on hover (darker blue) */
+}
