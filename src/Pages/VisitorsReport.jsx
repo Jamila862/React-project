@@ -1,159 +1,129 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './VisitorsReport.css';
 import axios from 'axios';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import TimePicker from 'react-time-picker';
 
 const VisitorsReport = () => {
-  const [visitorsReports, setVisitorsReports] = useState([]);
-  const [newVisitor, setNewVisitor] = useState({
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    email: '',
-    address: '',
-    room: '',
-    date: new Date(),
-    timeSignIn: '12:00',
-    timeSignOut: '13:00'
-  });
-  const [showModal, setShowModal] = useState(false);
-  const [editMode, setEditMode] = useState(false); 
-  const [editVisitorId, setEditVisitorId] = useState(null); 
-  
-  const fetchVisitorsReport = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/all/visitorsReport');
-      setVisitorsReports(response.data);
-    } catch (error) {
-      console.error('Error fetching visitors report', error);
-    }
-  };
+  const [visitors, setVisitors] = useState([]);
 
   useEffect(() => {
-    fetchVisitorsReport();
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/all/visitorsReport'); // Replace with your backend API URL
+        const data = response.data;
+        setVisitors(data);
+      } catch (error) {
+        console.error('Error fetching visitors:', error);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:8080/Delete/visitorsReport${id}`);
-      fetchVisitorsReport(); // Refresh the list after deletion
-    } catch (error) {
-      console.error('Error deleting visitors report', error);
-    }
-  };
-
-  
-  const activateEditMode = (visitorId) => {
-    const visitorToEdit = visitorsReports.find(visitor => visitor.id === visitorId);
-    if (visitorToEdit) {
-      setEditMode(true);
-      setEditVisitorId(visitorId);
-      setNewVisitor({
-        firstName: visitorToEdit.firstName,
-        lastName: visitorToEdit.lastName,
-        phoneNumber: visitorToEdit.phoneNumber,
-        email: visitorToEdit.email,
-        address: visitorToEdit.address,
-        room: visitorToEdit.room,
-        date: new Date(visitorToEdit.date),
-        timeSignIn: visitorToEdit.timeSignIn,
-        timeSignOut: visitorToEdit.timeSignOut
-      });
-      setShowModal(true); 
-    }
-  };
-
-  
-  const handleUpdate = async () => {
-    try {
-      const response = await axios.put(`http://localhost:8080/Update/VisitorsReport/${editVisitorId}`, newVisitor);
-      const updatedVisitor = response.data;
-      const updatedList = visitorsReports.map(visitor => {
-        if (visitor.id === updatedVisitor.id) {
-          return updatedVisitor;
-        }
-        return visitor;
-      });
-      setVisitorsReports(updatedList);
-      setEditMode(false);
-      setShowModal(false);
-      setEditVisitorId(null);
-      setNewVisitor({
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        email: '',
-        address: '',
-        room: '',
-        date: new Date(),
-        timeSignIn: '12:00',
-        timeSignOut: '13:00'
-      });
-    } catch (error) {
-      console.error('Error updating visitor report', error);
-    }
-  };
-
-  
   const handleAdd = async () => {
+    const firstName = prompt('Enter first name:');
+    const lastName = prompt('Enter last name:');
+    const phoneNumber = prompt('Enter phone number:');
+    const email = prompt('Enter email:');
+    const address = prompt('Enter address:');
+    const room = prompt('Enter room:');
+    const date = prompt('Enter date (YYYY-MM-DD):');
+    const timeIn = prompt('Enter time in (HH:MM):');
+    const timeOut = prompt('Enter time out (HH:MM) or leave blank if still visiting:');
+
+    if (!firstName || !lastName || !phoneNumber || !email || !address || !room || !date || !timeIn) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
     try {
-      const response = await axios.post('http://localhost:8080/add/visitorsReport', newVisitor);
-      setVisitorsReports([...visitorsReports, response.data]); // Add new visitor report to the list
-      setNewVisitor({
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        email: '',
-        address: '',
-        room: '',
-        date: new Date(),
-        timeSignIn: '12:00',
-        timeSignOut: '13:00'
-      }); 
-      setShowModal(false); 
+      const response = await axios.post('http://localhost:8080/add/visitorsReport', {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        address,
+        room,
+        date,
+        timeIn,
+        timeOut,
+      });
+
+      if (response.data.success) {
+        console.log('New visitor added successfully!');
+        setVisitors([...visitors, response.data.visitor]); // Add new visitor to state
+      } else {
+        console.error('Error adding visitor:', response.data.error);
+        alert('Error adding visitor. Please try again.');
+      }
     } catch (error) {
-      console.error('Error adding visitors report', error);
+      console.error('Error adding visitor:', error);
+      alert('Error adding visitor. Please try again.');
     }
   };
 
-  
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewVisitor(prevVisitor => ({
-      ...prevVisitor,
-      [name]: value
-    }));
+  const handleDelete = async (Id) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this visitor?');
+
+    if (confirmDelete) {
+      try {
+        const response = await axios.delete(`http://localhost:8080/Delete/visitorsReport/${Id}`);
+
+        if (response.data.success) {
+          console.log('Visitor deleted successfully!');
+          setVisitors(visitors.filter((visitor) => visitor.id !== Id));
+        } else {
+          console.error('Error deleting visitor:', response.data.error);
+          alert('Error deleting visitor. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error deleting visitor:', error);
+        alert('Error deleting visitor. Please try again.');
+      }
+    }
   };
 
-  
-  const handleDateChange = (date) => {
-    setNewVisitor(prevVisitor => ({
-      ...prevVisitor,
-      date
-    }));
-  };
+  const handleUpdate = async (Id) => {
+    const updatedFirstName = prompt('Enter updated first name (leave blank if unchanged):', visitors.find((visitor) => visitor.id === Id).firstName);
+    const updatedLastName = prompt('Enter updated last name (leave blank if unchanged):', visitors.find((visitor) => visitor.id === Id).lastName);
+    const updatedPhoneNumber = prompt('Enter updated phone number (leave blank if unchanged):', visitors.find((visitor) => visitor.id === Id).phoneNumber);
+    const updatedEmail = prompt('Enter updated email (leave blank if unchanged):', visitors.find((visitor) => visitor.id === Id).email);
+    const updatedAddress = prompt('Enter updated address (leave blank if unchanged):', visitors.find((visitor) => visitor.id === Id).address);
+    const updatedRoom = prompt('Enter updated room (leave blank if unchanged):', visitors.find((visitor) => visitor.id === Id).room);
+    const updatedDate = prompt('Enter updated date (YYYY-MM-DD):', visitors.find((visitor) => visitor.id === Id).date);
+    const updatedTimeIn = prompt('Enter updated time in (HH:MM) (leave blank if unchanged):', visitors.find((visitor) => visitor.id === Id).timeIn);
+    const updatedTimeOut = prompt('Enter updated time out (HH:MM) or leave blank if unchanged:', visitors.find((visitor) => visitor.id === Id).timeOut);
 
-  
-  const handleTimeSignInChange = (timeSignIn) => {
-    setNewVisitor(prevVisitor => ({
-      ...prevVisitor,
-      timeSignIn
-    }));
-  };
+    const updatedVisitor = {
+      firstName: updatedFirstName || visitors.find((visitor) => visitor.id === Id).firstName,
+      lastName: updatedLastName || visitors.find((visitor) => visitor.id === Id).lastName,
+      phoneNumber: updatedPhoneNumber || visitors.find((visitor) => visitor.id === Id).phoneNumber,
+      email: updatedEmail || visitors.find((visitor) => visitor.id === Id).email,
+      address: updatedAddress || visitors.find((visitor) => visitor.id === Id).address,
+      room: updatedRoom || visitors.find((visitor) => visitor.id === Id).room,
+      date: updatedDate || visitors.find((visitor) => visitor.id === Id).date,
+      timeIn: updatedTimeIn || visitors.find((visitor) => visitor.id === Id).timeIn,
+      timeOut: updatedTimeOut || visitors.find((visitor) => visitor.id === Id).timeOut,
+    };
 
-  
-  const handleTimeSignOutChange = (timeSignOut) => {
-    setNewVisitor(prevVisitor => ({
-      ...prevVisitor,
-      timeSignOut
-    }));
+    try {
+      const response = await axios.put(`http://localhost:8080/Update/VisitorsReport/${Id}`, updatedVisitor);
+
+      if (response.data.success) {
+        console.log('Visitor updated successfully!');
+        const updatedVisitors = visitors.map((visitor) => (visitor.id === Id ? updatedVisitor : visitor));
+        setVisitors(updatedVisitors);
+      } else {
+        console.error('Error updating visitor:', response.data.error);
+        alert('Error updating visitor. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error updating visitor:', error);
+      alert('Error updating visitor. Please try again.');
+    }
   };
 
   return (
-    <div className="VisitorsReport">
+    <div className="visitors-report">
       <h1>Visitors Report</h1>
       <table>
         <thead>
@@ -161,17 +131,17 @@ const VisitorsReport = () => {
             <th>First Name</th>
             <th>Last Name</th>
             <th>Phone Number</th>
-            <th>Email Address</th>
+            <th>Email</th>
             <th>Address</th>
             <th>Room</th>
             <th>Date</th>
-            <th>Time in</th>
-            <th>Time out</th>
+            <th>Time In</th>
+            <th>Time Out</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {visitorsReports.map((visitor) => (
+          {visitors.map((visitor) => (
             <tr key={visitor.id}>
               <td>{visitor.firstName}</td>
               <td>{visitor.lastName}</td>
@@ -180,72 +150,17 @@ const VisitorsReport = () => {
               <td>{visitor.address}</td>
               <td>{visitor.room}</td>
               <td>{visitor.date}</td>
-              <td>{visitor.timeSignIn}</td>
-              <td>{visitor.timeSignOut}</td>
+              <td>{visitor.timeIn}</td>
+              <td>{visitor.timeOut}</td>
               <td>
-                <button onClick={() => activateEditMode(visitor.id)}>Update</button>
+                <button onClick={() => handleUpdate(visitor.id)}>Update</button>
                 <button onClick={() => handleDelete(visitor.id)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      {/* Add button to toggle modal */}
-      <button onClick={() => {
-        setShowModal(true);
-        setEditMode(false); // Set to false to add new visitor
-      }}>Add</button>
-
-      {/* Modal for adding or editing a visitor report */}
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => {
-              setShowModal(false);
-              setEditMode(false);
-              setEditVisitorId(null);
-              setNewVisitor({
-                firstName: '',
-                lastName: '',
-                phoneNumber: '',
-                email: '',
-                address: '',
-                room: '',
-                date: new Date(),
-                timeSignIn: '12:00',
-                timeSignOut: '13:00'
-              });
-            }}>&times;</span>
-            <h2>{editMode ? 'Edit Visitor Report' : 'Add New Visitor Report'}</h2>
-            <form>
-              <input type="text" name="firstName" value={newVisitor.firstName} onChange={handleInputChange} placeholder="First Name" required />
-              <input type="text" name="lastName" value={newVisitor.lastName} onChange={handleInputChange} placeholder="Last Name" required />
-              <input type="text" name="phoneNumber" value={newVisitor.phoneNumber} onChange={handleInputChange} placeholder="Phone Number" required />
-              <input type="text" name="email" value={newVisitor.email} onChange={handleInputChange} placeholder="Email Address" required />
-              <input type="text" name="address" value={newVisitor.address} onChange={handleInputChange} placeholder="Address" required />
-              <input type="text" name="room" value={newVisitor.room} onChange={handleInputChange} placeholder="Room" required />
-              <DatePicker
-                selected={newVisitor.date}
-                onChange={handleDateChange}
-                dateFormat="yyyy-MM-dd"
-                peekNextMonth
-                showMonthDropdown
-                showYearDropdown
-                dropdownMode="select"
-              />
-              <TimePicker
-                onChange={handleTimeSignInChange}
-                value={newVisitor.timeSignIn}
-              />
-              <TimePicker
-                onChange={handleTimeSignOutChange}
-                value={newVisitor.timeSignOut}
-              />
-              <button type="button" onClick={editMode ? handleUpdate : handleAdd}>{editMode ? 'Update' : 'Add'}</button>
-            </form>
-          </div>
-        </div>
-      )}
+      <button onClick={handleAdd}>Add</button>
     </div>
   );
 };

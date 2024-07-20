@@ -7,6 +7,7 @@ import VisitorsSign from './Pages/VisitorsSign';
 import MainLayout from './Layout/MainLayout';
 import HomePage from './Pages/HomePage';
 import SideNav from './Component/SideNav';
+import Managers from './Pages/Managers';
 
 
 
@@ -24,6 +25,7 @@ function  App (){
         <Route path='visit' element={<VisitorsSign/>}/>
         <Route path='visitor' element={<VisitorsReport/>}/>
         <Route path='manager'element={<ManagersLogin/>}/>
+        <Route path='managers' element={<Managers/>}/>
       
         
                

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './VisitorsSign.css';
+import styles from './VisitorsSign.module.css';
 
 const VisitorsSign = () => {
   const [formData, setFormData] = useState({
@@ -21,13 +21,25 @@ const VisitorsSign = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('Sign in form submitted:', formData);
+    
+    setFormData({
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      emailAddress: '',
+      address: '',
+      room: '',
+      date: '',
+      timeIn: '',
+      timeOut: '',
+    });
   };
 
   return (
-    <div className="visitor-sign-form">
+    <div className={styles.visitorSignForm}>
       <h2>Visitors Sign Form</h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="firstName">First Name:</label>
           <input
             type="text"
@@ -38,7 +50,7 @@ const VisitorsSign = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="lastName">Last Name:</label>
           <input
             type="text"
@@ -49,7 +61,7 @@ const VisitorsSign = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="phoneNumber">Phone Number:</label>
           <input
             type="tel"
@@ -60,7 +72,7 @@ const VisitorsSign = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="emailAddress">Email Address:</label>
           <input
             type="email"
@@ -71,7 +83,7 @@ const VisitorsSign = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="address">Address:</label>
           <input
             type="text"
@@ -82,16 +94,16 @@ const VisitorsSign = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="room">Room:</label>
-          <select name="room" id="room" value={formData.room} onChange={handleChange}>
+          <select name="room" id="room" value={formData.room} onChange={handleChange} required>
             <option value="">-- Select Room --</option>
             <option value="room1">Room 1</option>
             <option value="room2">Room 2</option>
             {/* Add more room options as needed */}
           </select>
         </div>
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="date">Date of Sign-In:</label>
           <input
             type="date"
@@ -102,7 +114,7 @@ const VisitorsSign = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="timeIn">Time of Sign-In:</label>
           <input
             type="time"
@@ -113,7 +125,7 @@ const VisitorsSign = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="timeOut">Time of Sign-Out:</label>
           <input
             type="time"
@@ -124,7 +136,7 @@ const VisitorsSign = () => {
             required
           />
         </div>
-        <button type="submit">Sign In</button>
+        <button type="submit" className={styles.submitButton}>Sign In</button>
       </form>
     </div>
   );

@@ -1,0 +1,66 @@
+
+.visitorSignForm {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #f18080;
+  border-radius: 8px;
+  background-color: #80bbb1;
+}
+
+.visitorSignForm h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #181616;
+}
+
+.visitorSignForm form {
+  display: flex;
+  flex-direction: column;
+}
+
+.visitorSignForm .formGroup {
+  margin-bottom: 15px;
+}
+
+.visitorSignForm label {
+  font-weight: bold;
+}
+
+.visitorSignForm input[type="text"],
+.visitorSignForm input[type="email"],
+.visitorSignForm input[type="tel"],
+.visitorSignForm select,
+.visitorSignForm input[type="date"],
+.visitorSignForm input[type="time"] {
+  width: calc(100% - 12px);
+  padding: 8px;
+  border: 1px solid #ff9494;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.visitorSignForm select {
+  padding: 8px;
+}
+
+.visitorSignForm .submitButton {
+  background-color: #007bff;
+  color: #070a08;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.visitorSignForm .submitButton:hover {
+  background-color: #b30e81;
+}
+
+@media (max-width: 768px) {
+  .visitorSignForm {
+    width: 100%;
+  }
+}

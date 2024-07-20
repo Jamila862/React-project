@@ -1,46 +1,84 @@
 /* ManagerLogin.css */
 
 .login-form {
-  background-color: beige;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #136103;
+  border-radius: 8px;
+  background-color: #d48989;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #111010;
+}
+
+.login-form form {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centers elements horizontally */
-  justify-content: center; /* Centers elements vertically */
-  width: 500px; /* Sets form width */
-  margin: 0 auto; /* Centers form horizontally on the page */
-  padding: 20px; /* Adds padding inside the form */
-  border-radius: 10px; /* Adds rounded corners to the form */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow effect */
 }
 
-h2 {
-  text-align: center; /* Centers the title text */
-  margin-bottom: 30px; /* Adds space below the title */
+.login-form label {
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #131010;
 }
 
-label {
-  display: block; /* Makes labels appear on separate lines */
-  margin-bottom: 10px; /* Adds space below labels */
-  font-weight: bold; /* Makes labels bold for emphasis (optional) */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 2px solid #e62525;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
-input {
-  width: 100%; /* Sets input width to 100% of form width */
-  padding: 17px; /* Adds padding inside input fields */
-  border: 1px solid #ee1b1b; /* Adds a border to input fields */
-  border-radius: 10px; /* Adds rounded corners to input fields */
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+  outline: none;
+  border-color: #660e30;
+  box-shadow: 0 0 5px rgba(43, 100, 161, 0.5);
 }
 
-button {
-  background-color: #1879e0; /* Sets button background color (blue) */
-  color: #dd1c1c; /* Sets button text color (white) */
-  padding: 10px 20px;
-  margin: 20px;
-  border: none; /* Removes button border */
-  border-radius: 10px; /* Adds rounded corners to button */
-  cursor: pointer; /* Changes cursor to pointer on hover */
+.login-form .error {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: -10px;
+  margin-bottom: 15px;
 }
 
-button:hover {
-  background-color: #ceb110; /* Changes button background color on hover (darker blue) */
+.login-form button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: #9c0f4a;
+}
+
+.login-form button:active {
+  background-color: #004f9b;
+}
+
+.login-form button:focus {
+  outline: none;
+}
+
+.login-form button:disabled {
+  background-color: #632323;
+  cursor: not-allowed;
+}
+
+.login-form button[type="submit"] {
+  margin-top: 20px;
+  align-self: center;
 }

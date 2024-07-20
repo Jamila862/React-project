@@ -20,8 +20,9 @@ const SideNav = () => {
         </a>
         <a href="/">HomePage</a>
         <a href="Visit">VisitorsSign</a>
-        <a href="manager">ManagersLogin</a>
+        <a href="login">ManagersLogin</a>
         <a href="visitor">VisitorsReport</a>
+        <a href="managers">Managers</a>
         
         
       </div>

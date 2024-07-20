@@ -37,13 +37,21 @@
     width: 100%;
     bottom: 0;
   }
-  .home_img{
-    display: flex;
-    gap: 45px;
-    flex-wrap: wrap;
-    justify-content: left;
-
+  .home_img {
+    margin-top: 20px;
+    cursor: pointer;
+    position: relative; 
+    overflow: hidden; 
   }
-  .home_img img{
+  
+  .home_img img {
     width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
   }
+  
+  .home_img img:hover {
+    transform: scale(1.05);
+  }
+  
